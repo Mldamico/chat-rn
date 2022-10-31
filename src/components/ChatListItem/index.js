@@ -1,23 +1,39 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
-
-const ChatListItem = () => {
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+const ChatListItem = ({ chat }) => {
+  const navigation = useNavigation();
+  const route = useRoute();
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() =>
+        navigation.navigate("Chat", { id: chat.id, name: chat.user.name })
+      }
+      style={styles.container}
+    >
       <Image
         source={{
-          uri: "https://qph.cf2.quoracdn.net/main-qimg-134e3bf89fff27bf56bdbd04e7dbaedf.webp",
+          uri: chat.user.image,
         }}
         style={styles.image}
       />
       <View style={styles.content}>
         <View style={styles.row}>
-          <Text style={styles.name}>Morgan</Text>
-          <Text style={styles.subtitle}>8:00</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {chat.user.name}
+          </Text>
+          <Text style={styles.subtitle}>
+            {dayjs(chat.lastMessage.createdAt).fromNow()}
+          </Text>
         </View>
-        <Text style={styles.subtitle}> Hello!!!</Text>
+        <Text style={styles.subtitle} numberOfLines={2}>
+          {chat.lastMessage.text}
+        </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
