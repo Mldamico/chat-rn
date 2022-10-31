@@ -19,6 +19,7 @@ const ChatScreen = () => {
   }, [route.params]);
   return (
     <KeyboardAvoidingView
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 90}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.bg}
     >
